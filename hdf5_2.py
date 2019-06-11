@@ -1,15 +1,29 @@
-# Reading from HDF5 files.
+# Reading HDF5 files
 
 import numpy as np
-import h5py
+from h5py import File as hdf_file
 
-with h5py.File('hdf5_data.h5', 'r') as hdf:
-    print(f'List of datasets in file: {hdf.keys()}')
-    dataset_1 = hdf.get('dataset1')
-    dataset_2 = hdf.get('dataset2')
+with hdf_file('hdf5_data_sample1.h5', 'r') as hdf:
+    print(f'List of keys of datasets in file: {hdf.keys()}')
+    print(f'Value of key: {hdf.get("matrix")}')
+    print(f'Actual value: {hdf.get("matrix")[()]}') # new way of getting dataset .value is deprecated
+    print(f'Name of dataset: {hdf.get("matrix").name}')
 
-    print(np.array(dataset_1))
-    print(np.array(dataset_2))
+    # Converting value directly to numpy array
+    dataset = np.array(hdf.get('matrix'))
+    print('\ngetting value via. numpy \n', dataset)
+    print(f'Shape of the matrix is: {dataset.shape}')
 
-    print(f'Shape of dataset_1 is: {np.array(dataset_1).shape}')
-    print(f'Shape of dataset_2 is: {np.array(dataset_2).shape}')
+print('===============================================================')
+
+with hdf_file('hdf5_data_sample2.h5', 'r') as hdf:
+    print(f'List of keys of datasets in file: {hdf.keys()}')
+    print(f'Value of key: {hdf.get("matrix_1")}')
+    print(f'Actual value: {hdf.get("matrix_1")[()]}') # new way of getting dataset .value is deprecated
+    print(f'Name of dataset: {hdf.get("matrix_1").name}')
+
+    # Converting value directly to numpy array
+    dataset = np.array(hdf.get('matrix_1'))
+    print('\ngetting value via. numpy \n', dataset)
+    print(f'Shape of the matrix is: {dataset.shape}')
+
